@@ -213,9 +213,11 @@ public class Board {
 
     public void flagClicked(int i, int j) {
         if (board[i][j].getFlaggedStatus() == false && board[i][j].getQuestionMarkedStatus() == false) {
-            board[i][j].setFlagged(true);
-            buttons[i][j].setBackgroundResource(R.drawable.flag);
-            spotsFlagged++;
+            if (numberOfMines-spotsFlagged != 0) {
+                board[i][j].setFlagged(true);
+                buttons[i][j].setBackgroundResource(R.drawable.flag);
+                spotsFlagged++;
+            }
             return;
         }
 

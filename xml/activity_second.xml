@@ -39,7 +39,7 @@
 
     <Button
         android:id="@+id/smileButton"
-        android:layout_width="46dp"
+        android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -54,7 +54,7 @@
 
     <TextView
         android:id="@+id/numberOfMinesLeftTextView"
-        android:layout_width="40dp"
+        android:layout_width="50dp"
         android:layout_height="32dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
@@ -66,7 +66,8 @@
         app:layout_constraintBottom_toTopOf="@+id/boardTableLayout"
         app:layout_constraintStart_toEndOf="@+id/pictureOfFlagTextView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:id="@+id/pictureOfFlagTextView"
@@ -81,6 +82,40 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/boardTableLayout"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/numberOfSecondsTextView"
+        android:layout_width="50dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/lightGray"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/boardTableLayout"
+        app:layout_constraintEnd_toStartOf="@+id/pictureOfTimeTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginRight="8dp" />
+
+    <TextView
+        android:id="@+id/pictureOfTimeTextView"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/lightGray"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/boardTableLayout"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
