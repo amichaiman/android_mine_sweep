@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private int selectedBoardSize;
     private int selectedNumberOfMines;
 
-    public boolean modeSelected;
     private static final int EASY_BOARD_SIZE = 6;
     private static final int INTERMEDIATE_BOARD_SIZE = 12;
     private static final int PRO_BOARD_SIZE = 18;
@@ -53,13 +52,12 @@ public class MainActivity extends AppCompatActivity {
         selectedBoardSize = 3;
         selectedNumberOfMines = 3;
 
-        modeSelected = false;
         theme = DEFAULT_THEME;
+
         beginnerSwitch = (Switch) findViewById(R.id.beginnerSwitch);
         beginnerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                modeSelected = b;
                 if (b){
                     turnAllSwitchesOffBesidesChecked(beginnerSwitch);
                 }
@@ -70,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         intermediateSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                modeSelected = b;
                 if (b){
                     turnAllSwitchesOffBesidesChecked(intermediateSwitch);
                 }
@@ -83,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
 
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                modeSelected = b;
                 if (b){
                     turnAllSwitchesOffBesidesChecked(proSwitch);
                 }
@@ -95,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
         randomSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                modeSelected = b;
                 if (b){
                     turnAllSwitchesOffBesidesChecked(randomSwitch);
                 }
@@ -111,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
         customSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                modeSelected = b;
                 if (b){
                     boardSizeSpinner.setVisibility(View.VISIBLE);
                     numberOfMinesSpinner.setVisibility(View.VISIBLE);
@@ -126,10 +120,8 @@ public class MainActivity extends AppCompatActivity {
         boardSizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                modeSelected = true;
                 selectedBoardSize = Integer.parseInt(adapterView.getItemAtPosition(i).toString());
                 setNumberOfMinesInSpinner();
-
             }
 
             @Override
@@ -145,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
         numberOfMinesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                modeSelected = true;
                 selectedNumberOfMines = Integer.parseInt(adapterView.getItemAtPosition(i).toString());
             }
 
@@ -158,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (modeSelected == false) {
+                if (noModeSelected()== true) {
                     Toast.makeText(getApplicationContext(),"Please enter game mode",Toast.LENGTH_SHORT).show();
                 } else {
                     startGame(boardSize(), numberOfMines());
@@ -177,6 +168,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private boolean noModeSelected() {
+        if (beginnerSwitch.isChecked() == true){
+            return false;
+        }
+
+        if (intermediateSwitch.isChecked() == true){
+            return false;
+        }
+
+        if (proSwitch.isChecked() == true){
+            return false;
+        }
+
+        if (randomSwitch.isChecked() == true){
+            return false;
+        }
+        if (customSwitch.isChecked() == true){
+            return false;
+        }
+        return true;
     }
 
     @Override
