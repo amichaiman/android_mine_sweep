@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private Button settingsButton;
 
     private String theme;
+    private boolean soundOn;
     private int randomBoardSize;
     ArrayList<String> numOfMines;
     private int selectedBoardSize;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         selectedBoardSize = 3;
         selectedNumberOfMines = 3;
-
+        soundOn = true;
         theme = DEFAULT_THEME;
 
         beginnerSwitch = (Switch) findViewById(R.id.beginnerSwitch);
@@ -163,7 +164,10 @@ public class MainActivity extends AppCompatActivity {
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, settingsActivity.class),1);
+                Intent i = new Intent(MainActivity.this, settingsActivity.class);
+                i.putExtra("sound",soundOn);
+                i.putExtra("theme",theme);
+                startActivityForResult(i,1);
 
             }
         });
@@ -195,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         theme = data.getStringExtra("theme");
+        soundOn = data.getBooleanExtra("sound",true);
         Toast.makeText(getApplicationContext(),"Theme set to "+theme,Toast.LENGTH_SHORT).show();
 
     }
@@ -225,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
         game.putExtra("boardSize",boardSize);
         game.putExtra("numberOfMines",numberOfMines);
         game.putExtra("theme",theme);
+        game.putExtra("sound",soundOn);
         startActivity(game);
     }
 

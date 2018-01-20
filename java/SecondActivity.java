@@ -25,6 +25,7 @@ public class SecondActivity extends AppCompatActivity {
     private Thread t;
     private int time;
 
+    private boolean soundOn;
     private MediaPlayer startGameMediaPlayer;
     private MediaPlayer winGameMediaPlayer;
 
@@ -44,6 +45,8 @@ public class SecondActivity extends AppCompatActivity {
         boardSize = bundle.getInt("boardSize");
         numberOfMines = bundle.getInt("numberOfMines");
         themeName = bundle.getString("theme");
+        soundOn = bundle.getBoolean("sound");
+
         gameTheme = new Theme(themeName);
         numberOfSecondsTextView = (TextView) findViewById(R.id.numberOfSecondsTextView);
         numberOfMinesLeftTextView = (TextView) findViewById(R.id.numberOfMinesLeftTextView);
@@ -51,7 +54,9 @@ public class SecondActivity extends AppCompatActivity {
         pictureOfTimeTextView = (TextView) findViewById(R.id.pictureOfTimeTextView);
 
         setSoundByTheme();
-        startGameMediaPlayer.start();
+        if (soundOn && !themeName.contentEquals("classic")) {
+            startGameMediaPlayer.start();
+        }
         pictureOfTimeTextView.setBackgroundResource(R.drawable.time);
         pictureOfFlagTextView.setBackgroundResource(R.drawable.flag);
         numberOfMinesLeftTextView.setText(Integer.toString(numberOfMines));
@@ -95,8 +100,8 @@ public class SecondActivity extends AppCompatActivity {
             }
         });
 
-        createBoard();
         t.start();
+        createBoard();
         board.setButtons(buttons);
 
     }
@@ -131,7 +136,9 @@ public class SecondActivity extends AppCompatActivity {
                             board.unActivateButtons();
 
                             if (board.gameWon()) {
-                                winGameMediaPlayer.start();
+                                if (soundOn && !themeName.contentEquals("classic")){
+                                    winGameMediaPlayer.start();
+                                }
                                 gameTheme.smileyWon(smileButton);
                             } else {
                                 gameTheme.smileyLost(smileButton);
@@ -197,9 +204,21 @@ public class SecondActivity extends AppCompatActivity {
                 startGameMediaPlayer = MediaPlayer.create(this, R.raw.game_start_trump);
                 winGameMediaPlayer = MediaPlayer.create(this, R.raw.win_game_trump);
                 break;
-            default:
-                startGameMediaPlayer = MediaPlayer.create(this, R.raw.game_start_vitas);
-                winGameMediaPlayer = MediaPlayer.create(this, R.raw.win_game_vitas);
+            case "quagmire":
+                startGameMediaPlayer = MediaPlayer.create(this, R.raw.game_start_quagmire);
+                winGameMediaPlayer = MediaPlayer.create(this, R.raw.win_game_quagmire); break;
+            case "borat":
+                startGameMediaPlayer = MediaPlayer.create(this, R.raw.start_game_borat);
+                winGameMediaPlayer = MediaPlayer.create(this, R.raw.win_game_borat); break;
+            case "obama":
+                startGameMediaPlayer = MediaPlayer.create(this, R.raw.start_game_obama);
+                winGameMediaPlayer = MediaPlayer.create(this, R.raw.win_game_obama); break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        winGameMediaPlayer.stop();
+        super.onBackPressed();
     }
 }
