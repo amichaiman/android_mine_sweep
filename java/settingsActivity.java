@@ -9,6 +9,7 @@ import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
+import android.widget.Toast;
 
 public class settingsActivity extends AppCompatActivity {
     private Button smileyButton;
@@ -47,23 +48,23 @@ public class settingsActivity extends AppCompatActivity {
         boratButton.setBackgroundResource(R.drawable.borat);
         obamaButton.setBackgroundResource(R.drawable.obama);
 
-        smileyButton.setHeight(screenWidth/2);
-        smileyButton.setWidth(screenWidth/2);
+        smileyButton.setMaxHeight(screenWidth/3);
+        smileyButton.setMaxWidth(screenWidth/3);
 
-        trumpButton.setHeight(screenWidth/2);
-        trumpButton.setWidth(screenWidth/2);
+        trumpButton.setMaxHeight(screenWidth/3);
+        trumpButton.setMaxWidth(screenWidth/3);
 
-        vitasButton.setHeight(screenWidth/2);
-        vitasButton.setWidth(screenWidth/2);
+        vitasButton.setMaxHeight(screenWidth/3);
+        vitasButton.setMaxWidth(screenWidth/3);
 
-        quagmireButton.setWidth(screenWidth/2);
-        quagmireButton.setHeight(screenWidth/2);
+        quagmireButton.setMaxHeight(screenWidth/3);
+        quagmireButton.setMaxWidth(screenWidth/3);
 
-        boratButton.setWidth(screenWidth/2);
-        boratButton.setHeight(screenWidth/2);
+        boratButton.setMaxHeight(screenWidth/3);
+        boratButton.setMaxWidth(screenWidth/3);
 
-        obamaButton.setWidth(screenWidth/2);
-        obamaButton.setHeight(screenWidth/2);
+        obamaButton.setMaxHeight(screenWidth/3);
+        obamaButton.setMaxWidth(screenWidth/3);
 
         soundSwitch.setChecked(bundle.getBoolean("sound"));
         smileyButton.setOnClickListener(new View.OnClickListener() {
@@ -74,43 +75,75 @@ public class settingsActivity extends AppCompatActivity {
             }
         });
 
+        trumpButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                theme = "trump";
+                returnToMain();
+                return true;
+            }
+        });
+
         trumpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                theme = "trump";
-                returnToMain();
+                Toast.makeText(getApplicationContext(),"Level locked",Toast.LENGTH_SHORT).show();
             }
         });
-
-
+        vitasButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                theme = "vitas";
+                returnToMain();
+                return true;
+            }
+        });
         vitasButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                theme = "vitas";
-                returnToMain();
+                Toast.makeText(getApplicationContext(),"Level locked",Toast.LENGTH_SHORT).show();
             }
         });
-
+        quagmireButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                theme = "quagmire";
+                returnToMain();
+                return true;
+            }
+        });
         quagmireButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                theme = "quagmire";
-                returnToMain();
+                Toast.makeText(getApplicationContext(),"Level locked",Toast.LENGTH_SHORT).show();
             }
         });
-
+        boratButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                theme = "borat";
+                returnToMain();
+                return true;
+            }
+        });
         boratButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                theme = "borat";
+                Toast.makeText(getApplicationContext(),"Level locked",Toast.LENGTH_SHORT).show();
+            }
+        });
+        obamaButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                theme = "obama";
                 returnToMain();
+                return true;
             }
         });
         obamaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                theme = "obama";
-                returnToMain();
+                Toast.makeText(getApplicationContext(),"Level locked",Toast.LENGTH_SHORT).show();
             }
         });
     }
