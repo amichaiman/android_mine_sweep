@@ -1,5 +1,6 @@
 package com.example.amichai.myapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +9,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -45,16 +48,53 @@ public class MainActivity extends AppCompatActivity {
     private static final int PRO_NUMBER_OF_MINES = 60;
     public static final String DEFAULT_THEME= "classic";
 
+
+    public static GameLevel classic = new GameLevel("classic");
+    public static GameLevel trump = new GameLevel("trump");
+    public static GameLevel vitas = new GameLevel("vitas");
+    public static GameLevel quagmire= new GameLevel("quagmire");
+    public static GameLevel borat = new GameLevel("borat");
+    public static GameLevel obama = new GameLevel("obama");
+
+    public GameLevel currentGameLevel;
+
+    private String gameMode;
+
+    private TextView timeEasyModeTextView;
+    private TextView timeIntermediateModeTextView;
+    private TextView timeProModeTextView;
+
+
+    private ImageView easyChecked;
+    private ImageView intermediateChecked;
+    private ImageView proChecked;
+
+    private int gameTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        trump.setLockedStatus(false);
+        easyChecked = (ImageView) findViewById(R.id.easyChecked);
+        intermediateChecked = (ImageView) findViewById(R.id.intermediateChecked);
+        proChecked = (ImageView) findViewById(R.id.proChecked);
+
+
+        timeEasyModeTextView = (TextView) findViewById(R.id.timeEasyTextView);
+        timeIntermediateModeTextView = (TextView) findViewById(R.id.timeIntermediateTextView);
+        timeProModeTextView = (TextView) findViewById(R.id.timeProTextView);
+
         selectedBoardSize = 3;
         selectedNumberOfMines = 3;
         soundOn = true;
+
         theme = DEFAULT_THEME;
 
+        setGameLevel();
+        setBestTimeTextViews();
+
+        setLevelOrder();
         beginnerSwitch = (Switch) findViewById(R.id.beginnerSwitch);
         beginnerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -168,10 +208,63 @@ public class MainActivity extends AppCompatActivity {
                 i.putExtra("sound",soundOn);
                 i.putExtra("theme",theme);
                 startActivityForResult(i,1);
-
             }
         });
 
+    }
+
+    private void setLevelOrder() {
+        trump.setNextLevel(quagmire);
+        quagmire.setNextLevel(vitas);
+        vitas.setNextLevel(borat);
+        borat.setNextLevel(obama);
+    }
+
+    public void setBestTimeTextViews() {
+        timeEasyModeTextView.setText(Integer.toString(currentGameLevel.getBestTimeEasyMode()));
+        timeIntermediateModeTextView.setText(Integer.toString(currentGameLevel.getBestIntermediateMode()));
+        timeProModeTextView.setText(Integer.toString(currentGameLevel.getBestTimeProMode()));
+
+        if (currentGameLevel.getBestTimeEasyMode() != Integer.MAX_VALUE){
+            timeEasyModeTextView.setVisibility(View.VISIBLE);
+            easyChecked.setVisibility(View.VISIBLE);
+        } else {
+            timeEasyModeTextView.setVisibility(View.INVISIBLE);
+            easyChecked.setVisibility(View.INVISIBLE);
+        }
+
+        if (currentGameLevel.getBestIntermediateMode() != Integer.MAX_VALUE){
+            timeIntermediateModeTextView.setVisibility(View.VISIBLE);
+            intermediateChecked.setVisibility(View.VISIBLE);
+        } else {
+            timeIntermediateModeTextView.setVisibility(View.INVISIBLE);
+            intermediateChecked.setVisibility(View.INVISIBLE);
+        }
+
+        if (currentGameLevel.getBestTimeProMode() != Integer.MAX_VALUE){
+            timeProModeTextView.setVisibility(View.VISIBLE);
+            proChecked.setVisibility(View.VISIBLE);
+        } else {
+            timeProModeTextView.setVisibility(View.INVISIBLE);
+            proChecked.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    void setGameLevel(){
+        switch(theme){
+            case "classic":
+                currentGameLevel = classic; break;
+            case "trump":
+                currentGameLevel = trump; break;
+            case "vitas":
+                currentGameLevel = vitas; break;
+            case "quagmire":
+                currentGameLevel = quagmire; break;
+            case "borat":
+                currentGameLevel = borat; break;
+            case "obama":
+                currentGameLevel = obama; break;
+        }
     }
 
     private boolean noModeSelected() {
@@ -196,12 +289,52 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        theme = data.getStringExtra("theme");
-        soundOn = data.getBooleanExtra("sound",true);
-        Toast.makeText(getApplicationContext(),"Theme set to "+theme,Toast.LENGTH_SHORT).show();
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 1) {
+                theme = data.getStringExtra("theme");
+                soundOn = data.getBooleanExtra("sound", true);
+                Toast.makeText(getApplicationContext(), "Level:" + theme, Toast.LENGTH_SHORT).show();
+                setGameLevel();
+            }
+            if (requestCode == 2) {
+                if (data.getBooleanExtra("refreshGame",false) == true){
+                    startGame(boardSize(),numberOfMines());
+                }
+                if (data.getBooleanExtra("gameWon", false)) {
+                    openNextLevelIfLocked();
+                    gameTime = data.getIntExtra("time", 0);
+                    setNewWinningTimeAccordingToMode();
+            }
+        }
+      }
+        setBestTimeTextViews();
+    }
 
+    private void openNextLevelIfLocked() {
+        if (currentGameLevel.getNextLevel().getLockedStatus() == true){
+            currentGameLevel.getNextLevel().setLockedStatus(false);
+            Toast.makeText(getApplicationContext(),currentGameLevel.getNextLevel().getThemeName()+" unlocked!",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setNewWinningTimeAccordingToMode() {
+        if (gameMode == "easy") {
+            if (currentGameLevel.getBestTimeEasyMode() > gameTime) {
+                currentGameLevel.setBestTimeEasyMode(gameTime);
+            }
+        } else if (gameMode == "intermediate"){
+            if (currentGameLevel.getBestTimeEasyMode() > gameTime){
+                currentGameLevel.setBestTimeEasyMode(gameTime);
+            }
+        } else {
+            if (currentGameLevel.getBestTimeEasyMode() > gameTime){
+                currentGameLevel.setBestTimeEasyMode(gameTime);
+            }
+        }
     }
 
     private void turnAllSwitchesOffBesidesChecked(Switch checkSwitch) {
@@ -231,17 +364,20 @@ public class MainActivity extends AppCompatActivity {
         game.putExtra("numberOfMines",numberOfMines);
         game.putExtra("theme",theme);
         game.putExtra("sound",soundOn);
-        startActivity(game);
+        startActivityForResult(game,2);
     }
 
     int boardSize(){
         if (beginnerSwitch.isChecked()){
+            gameMode = "easy";
             return EASY_BOARD_SIZE;
         }
         if (intermediateSwitch.isChecked()){
+            gameMode = "intermediate";
             return INTERMEDIATE_BOARD_SIZE;
         }
         if (proSwitch.isChecked()){
+            gameMode = "pro";
             return PRO_BOARD_SIZE;
         }
         if (randomSwitch.isChecked()){
@@ -270,4 +406,5 @@ public class MainActivity extends AppCompatActivity {
 
         return selectedNumberOfMines;
     }
+
 }

@@ -22,7 +22,8 @@ public class SecondActivity extends AppCompatActivity {
     private TextView pictureOfFlagTextView;
     private TextView pictureOfTimeTextView;
     private TextView numberOfSecondsTextView;
-    private Thread t;
+    private boolean refreshGame;
+
     private int time;
 
     private boolean soundOn;
@@ -33,7 +34,9 @@ public class SecondActivity extends AppCompatActivity {
     private String themeName;
     private Theme gameTheme;
 
+    private GameLevel currentGameLevel;
 
+    Thread t;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class SecondActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
 
+        refreshGame = false;
         boardSize = bundle.getInt("boardSize");
         numberOfMines = bundle.getInt("numberOfMines");
         themeName = bundle.getString("theme");
@@ -66,18 +70,24 @@ public class SecondActivity extends AppCompatActivity {
         time = 0;
         t = new Thread(){
             @Override
-            public void run(){
+            public void run() {
                 try{
-                    while (!board.gameIsOver()){
-                        numberOfSecondsTextView.setText(Integer.toString(time));
+                    while (!isInterrupted() && !board.gameIsOver()){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                numberOfSecondsTextView.setText(Integer.toString(time));
+                                time+=1;
+                            }
+                        });
                         Thread.sleep(1000);
-                        time += 1;
                     }
-                } catch (Exception e){
+                } catch (InterruptedException e){
 
                 }
             }
         };
+
 
         board = new Board(boardSize, numberOfMines);
         buttons = new Button[boardSize][boardSize];
@@ -89,10 +99,8 @@ public class SecondActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (board.gameIsOver()) {
-                        refreshGame();
-                    }
-                    gameTheme.smileyPressedImage(smileButton);
+                    refreshGame = true;
+                    onBackPressed();
                     return true;
                 }
                 gameTheme.smileyGameImage(smileButton);
@@ -139,6 +147,7 @@ public class SecondActivity extends AppCompatActivity {
                                 if (soundOn && !themeName.contentEquals("classic")){
                                     winGameMediaPlayer.start();
                                 }
+
                                 gameTheme.smileyWon(smileButton);
                             } else {
                                 gameTheme.smileyLost(smileButton);
@@ -181,11 +190,7 @@ public class SecondActivity extends AppCompatActivity {
             }
         }
     }
-    private void refreshGame(){
-        Intent restartActivity = getIntent();
-        finish();
-        startActivity(restartActivity);
-    }
+
 
     public void setThemeName(String themeName){
         this.themeName = themeName;
@@ -218,7 +223,24 @@ public class SecondActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        winGameMediaPlayer.stop();
+        backToMain();
+    }
+
+    private void backToMain() {
+        Intent backToMain = new Intent(SecondActivity.this, MainActivity.class);
+
+        if (soundOn && !themeName.contentEquals("classic")) {
+            winGameMediaPlayer.stop();
+        }
+        if (board.gameWon()){
+            backToMain.putExtra("gameWon", true);
+            backToMain.putExtra("time", time-1);
+            backToMain.putExtra("refreshGame",refreshGame);
+            setResult(RESULT_OK, backToMain);
+        }
+        backToMain.putExtra("refreshGame",refreshGame);
+        setResult(RESULT_OK, backToMain);
+        finish();
         super.onBackPressed();
     }
 }
