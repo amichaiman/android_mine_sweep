@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightGray"
+    android:background="@drawable/background"
     tools:context="com.example.amichai.myapplication.MainActivity">
 
     <Spinner
         android:id="@+id/numberOfMinesSpinner"
         android:layout_width="142dp"
         android:layout_height="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="12dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:background="@android:color/darker_gray"
         android:visibility="invisible"
+        android:background="@drawable/unwon"
         app:layout_constraintBottom_toTopOf="@+id/startGameButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -24,12 +24,11 @@
         android:id="@+id/boardSizeSpinner"
         android:layout_width="142dp"
         android:layout_height="30dp"
-        android:layout_marginBottom="12dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:background="@android:color/darker_gray"
         android:entries="@array/boardSizes"
         android:visibility="invisible"
+        android:background="@drawable/unwon"
         app:layout_constraintBottom_toTopOf="@+id/numberOfMinesSpinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -41,6 +40,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:background="@drawable/unwon"
         android:text="go"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,70 +49,17 @@
 
     <Switch
         android:id="@+id/customSwitch"
-        android:layout_width="150dp"
-        android:layout_height="25dp"
-        android:layout_marginBottom="30dp"
+        android:layout_width="142dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Custom"
         android:textAlignment="center"
+        android:theme="@style/SCBSwitch"
         app:layout_constraintBottom_toTopOf="@+id/boardSizeSpinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-
-    <Switch
-        android:id="@+id/randomSwitch"
-        android:layout_width="150dp"
-        android:layout_height="25dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Random"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/customSwitch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <Switch
-        android:id="@+id/proSwitch"
-        android:layout_width="150dp"
-        android:layout_height="25dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Pro"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/randomSwitch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Switch
-        android:id="@+id/intermediateSwitch"
-        android:layout_width="150dp"
-        android:layout_height="25dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Intermediate"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/proSwitch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Switch
-        android:id="@+id/beginnerSwitch"
-        android:layout_width="150dp"
-        android:layout_height="25dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Beginner"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/intermediateSwitch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/settingsButton"
@@ -123,5 +70,105 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginRight="8dp" />
+
+    <TextView
+        android:id="@+id/timeProTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/proButton"
+        app:layout_constraintEnd_toEndOf="@+id/proButton"
+        app:layout_constraintStart_toStartOf="@+id/proButton" />
+
+    <TextView
+        android:id="@+id/timeIntermediateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/intermediateButton"
+        app:layout_constraintEnd_toEndOf="@+id/intermediateButton"
+        app:layout_constraintStart_toStartOf="@+id/intermediateButton" />
+
+    <TextView
+
+        android:id="@+id/timeEasyTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/easyButton"
+        app:layout_constraintEnd_toEndOf="@+id/easyButton"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="@+id/easyButton" />
+
+    <Button
+        android:id="@+id/themeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/easyButton"
+        app:layout_constraintEnd_toEndOf="@+id/settingsButton"
+        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/proButton"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="pro"
+        android:background="@drawable/unwon"
+        app:layout_constraintBottom_toTopOf="@+id/customSwitch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/intermediateButton"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="intermediate"
+        android:background="@drawable/unwon"
+        app:layout_constraintBottom_toTopOf="@+id/proButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/easyButton"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/unwon"
+        android:text="easy"
+        app:layout_constraintBottom_toTopOf="@+id/intermediateButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

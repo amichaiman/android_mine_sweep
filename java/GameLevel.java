@@ -1,6 +1,15 @@
 package com.example.amichai.myapplication;
 
 public class GameLevel {
+
+    private static final int EASY_BOARD_SIZE = 6;
+    private static final int INTERMEDIATE_BOARD_SIZE = 12;
+    private static final int PRO_BOARD_SIZE = 18;
+
+    private static final int EASY_NUMBER_OF_MINES = 1;
+    private static final int INTERMEDIATE_NUMBER_OF_MINES = 20;
+    private static final int PRO_NUMBER_OF_MINES = 60;
+
     private String themeName;
 
     private int numberOfBombsEasyMode;
@@ -25,6 +34,13 @@ public class GameLevel {
         bestIntermediateMode = Integer.MAX_VALUE;
         bestTimeProMode = Integer.MAX_VALUE;
         levelLocked = true;
+        boardSizeEasyMode = EASY_BOARD_SIZE;
+        boardSizeIntermediateMode = INTERMEDIATE_BOARD_SIZE;
+        boardSizeProMode = PRO_BOARD_SIZE;
+        numberOfBombsEasyMode = EASY_NUMBER_OF_MINES;
+        numberOfBombsIntermediateMode = INTERMEDIATE_NUMBER_OF_MINES;
+        numberOfBombsHardMode = PRO_NUMBER_OF_MINES;
+
     }
 
     public GameLevel getNextLevel(){
@@ -122,4 +138,6 @@ public class GameLevel {
     public void setBestTimeProMode(int bestTimeProMode) {
         this.bestTimeProMode = bestTimeProMode;
     }
+
+    public boolean hasNext(){ return nextLevel!=null;}
 }

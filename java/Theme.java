@@ -1,5 +1,6 @@
 package com.example.amichai.myapplication;
 
+import android.view.View;
 import android.widget.Button;
 
 public class Theme {
@@ -17,6 +18,10 @@ public class Theme {
 
     public String getThemeName(){
         return themeName;
+    }
+
+    public void setThemeName(String themeName){
+        this.themeName = themeName;
     }
     public void smileyGameImage(Button b){
         switch (themeName) {
@@ -89,4 +94,45 @@ public class Theme {
         }
     }
 
+    public void setThemeButton(Button b) {
+        b.setVisibility(View.VISIBLE);
+        switch (themeName) {
+            case "vitas":
+                b.setBackgroundResource(R.drawable.vitas);
+                break;
+            case "classic":
+                b.setVisibility(View.INVISIBLE);
+            case "trump":
+                b.setBackgroundResource(R.drawable.trump);
+                break;
+            case "quagmire":
+                b.setBackgroundResource(R.drawable.quagmire);
+                break;
+            case "borat":
+                b.setBackgroundResource(R.drawable.borat);
+                break;
+            case "obama":
+                b.setBackgroundResource(R.drawable.obama);
+                break;
+        }
+    }
+    public void themeButtonPressed(Button b){
+        switch (themeName) {
+            case "vitas":
+                b.setBackgroundResource(R.drawable.vitas_sunglasses);
+                break;
+            case "trump":
+                b.setBackgroundResource(R.drawable.trump_sunglasses);
+                break;
+            case "quagmire":
+                b.setBackgroundResource(R.drawable.quagmire_sunglasses);
+                break;
+            case "borat":
+                b.setBackgroundResource(R.drawable.borat_sunglasses);
+                break;
+            case "obama":
+                b.setBackgroundResource(R.drawable.obama_sunglasses);
+                break;
+        }
+    }
 }
