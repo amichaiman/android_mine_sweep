@@ -1,6 +1,5 @@
 package com.example.amichai.myapplication;
 
-import android.view.View;
 import android.widget.Button;
 
 public class Theme {
@@ -95,13 +94,13 @@ public class Theme {
     }
 
     public void setThemeButton(Button b) {
-        b.setVisibility(View.VISIBLE);
-        switch (themeName) {
+        switch (GameTheme.currentGameLevel.getThemeName()) {
             case "vitas":
                 b.setBackgroundResource(R.drawable.vitas);
                 break;
             case "classic":
-                b.setVisibility(View.INVISIBLE);
+                b.setBackgroundResource(R.drawable.smiley);
+                break;
             case "trump":
                 b.setBackgroundResource(R.drawable.trump);
                 break;

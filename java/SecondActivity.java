@@ -26,15 +26,10 @@ public class SecondActivity extends AppCompatActivity {
 
     private int time;
 
-    private boolean soundOn;
     private MediaPlayer startGameMediaPlayer;
     private MediaPlayer winGameMediaPlayer;
 
     private Button smileButton;
-    private String themeName;
-    private Theme gameTheme;
-
-    private GameLevel currentGameLevel;
 
     Thread t;
 
@@ -48,17 +43,14 @@ public class SecondActivity extends AppCompatActivity {
         refreshGame = false;
         boardSize = bundle.getInt("boardSize");
         numberOfMines = bundle.getInt("numberOfMines");
-        themeName = bundle.getString("theme");
-        soundOn = bundle.getBoolean("sound");
 
-        gameTheme = new Theme(themeName);
         numberOfSecondsTextView = (TextView) findViewById(R.id.numberOfSecondsTextView);
         numberOfMinesLeftTextView = (TextView) findViewById(R.id.numberOfMinesLeftTextView);
         pictureOfFlagTextView = (TextView) findViewById(R.id.pictureOfFlagTextView);
         pictureOfTimeTextView = (TextView) findViewById(R.id.pictureOfTimeTextView);
 
         setSoundByTheme();
-        if (soundOn && !themeName.contentEquals("classic")) {
+        if (settingsActivity.soundOn && !GameTheme.currentGameLevel.getThemeName().contentEquals("classic")) {
             startGameMediaPlayer.start();
         }
         pictureOfTimeTextView.setBackgroundResource(R.drawable.time);
@@ -93,7 +85,7 @@ public class SecondActivity extends AppCompatActivity {
         buttons = new Button[boardSize][boardSize];
 
         smileButton = (Button) findViewById(R.id.smileButton);
-        gameTheme.smileyGameImage(smileButton);
+        GameTheme.theme.smileyGameImage(smileButton);
 
         smileButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -103,7 +95,7 @@ public class SecondActivity extends AppCompatActivity {
                     onBackPressed();
                     return true;
                 }
-                gameTheme.smileyGameImage(smileButton);
+                GameTheme.theme.smileyGameImage(smileButton);
                 return false;
             }
         });
@@ -137,6 +129,7 @@ public class SecondActivity extends AppCompatActivity {
 
                     public void onClick(View view) {
                         board.reCloseSpots(view.getId()/boardSize,view.getId()%boardSize);
+                        GameTheme.theme.smileyGameImage(smileButton);
                         board.buttonClicked(view.getId() / boardSize, view.getId() % boardSize);
                         numberOfMinesLeftTextView.setText(Integer.toString(numberOfMines - board.getSpotsFlagged()));
 
@@ -144,13 +137,13 @@ public class SecondActivity extends AppCompatActivity {
                             board.unActivateButtons();
 
                             if (board.gameWon()) {
-                                if (soundOn && !themeName.contentEquals("classic")){
+                                if (settingsActivity.soundOn && !GameTheme.currentGameLevel.getThemeName().contentEquals("classic")){
                                     winGameMediaPlayer.start();
                                 }
 
-                                gameTheme.smileyWon(smileButton);
+                                GameTheme.theme.smileyWon(smileButton);
                             } else {
-                                gameTheme.smileyLost(smileButton);
+                                GameTheme.theme.smileyLost(smileButton);
                                 board.revealMines();
                             }
                         }
@@ -162,13 +155,12 @@ public class SecondActivity extends AppCompatActivity {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
                         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                            gameTheme.smileyPressedImage(smileButton);
+                            GameTheme.theme.smileyPressedImage(smileButton);
                             if (board.buttonIsVisible(view.getId()/boardSize,view.getId()%boardSize)) {
                                 return false;
                             }
                             return false;
                         }
-                        gameTheme.smileyGameImage(smileButton);
                         return false;
                     }
                 });
@@ -176,6 +168,7 @@ public class SecondActivity extends AppCompatActivity {
                     @Override
                     public boolean onLongClick(View view) {
                         board.reCloseSpots(view.getId()/boardSize,view.getId()%boardSize);
+                        GameTheme.theme.smileyGameImage(smileButton);
                         board.buttonLongClicked(view.getId() / boardSize, view.getId() % boardSize);
                         numberOfMinesLeftTextView.setText(Integer.toString(numberOfMines - board.getSpotsFlagged()));
                         return true;
@@ -192,15 +185,8 @@ public class SecondActivity extends AppCompatActivity {
     }
 
 
-    public void setThemeName(String themeName){
-        this.themeName = themeName;
-    }
-    public String getThemeName(){
-        return themeName;
-    }
-
     private void setSoundByTheme() {
-        switch (gameTheme.getThemeName()) {
+        switch (GameTheme.currentGameLevel.getThemeName()) {
             case "vitas":
                 startGameMediaPlayer = MediaPlayer.create(this, R.raw.game_start_vitas);
                 winGameMediaPlayer = MediaPlayer.create(this, R.raw.win_game_vitas);
@@ -229,7 +215,7 @@ public class SecondActivity extends AppCompatActivity {
     private void backToMain() {
         Intent backToMain = new Intent(SecondActivity.this, MainActivity.class);
 
-        if (soundOn && !themeName.contentEquals("classic")) {
+        if (settingsActivity.soundOn && !GameTheme.currentGameLevel.getThemeName().contentEquals("classic")) {
             winGameMediaPlayer.stop();
         }
         if (board.gameWon()){

@@ -65,71 +65,9 @@
         android:id="@+id/settingsButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="14dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="8dp" />
-
-    <TextView
-        android:id="@+id/timeProTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="14sp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/proButton"
-        app:layout_constraintEnd_toEndOf="@+id/proButton"
-        app:layout_constraintStart_toStartOf="@+id/proButton" />
-
-    <TextView
-        android:id="@+id/timeIntermediateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="14sp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/intermediateButton"
-        app:layout_constraintEnd_toEndOf="@+id/intermediateButton"
-        app:layout_constraintStart_toStartOf="@+id/intermediateButton" />
-
-    <TextView
-
-        android:id="@+id/timeEasyTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/easyButton"
-        app:layout_constraintEnd_toEndOf="@+id/easyButton"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="@+id/easyButton" />
-
-    <Button
-        android:id="@+id/themeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/easyButton"
-        app:layout_constraintEnd_toEndOf="@+id/settingsButton"
-        app:layout_constraintHorizontal_bias="0.514"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -139,7 +77,8 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="pro"
+        android:text="PRO"
+        android:textAllCaps="false"
         android:background="@drawable/unwon"
         app:layout_constraintBottom_toTopOf="@+id/customSwitch"
         app:layout_constraintEnd_toEndOf="parent"
@@ -152,7 +91,8 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="intermediate"
+        android:text="INTERMEDIATE"
+        android:textAllCaps="false"
         android:background="@drawable/unwon"
         app:layout_constraintBottom_toTopOf="@+id/proButton"
         app:layout_constraintEnd_toEndOf="parent"
@@ -166,9 +106,19 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/unwon"
-        android:text="easy"
+        android:textAllCaps="false"
+        android:text="EASY"
         app:layout_constraintBottom_toTopOf="@+id/intermediateButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/gameThemeButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

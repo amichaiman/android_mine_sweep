@@ -1,14 +1,16 @@
 package com.example.amichai.myapplication;
 
-public class GameLevel {
+import java.io.Serializable;
 
-    private static final int EASY_BOARD_SIZE = 6;
-    private static final int INTERMEDIATE_BOARD_SIZE = 12;
-    private static final int PRO_BOARD_SIZE = 18;
+public class GameLevel implements Serializable {
 
-    private static final int EASY_NUMBER_OF_MINES = 1;
-    private static final int INTERMEDIATE_NUMBER_OF_MINES = 20;
-    private static final int PRO_NUMBER_OF_MINES = 60;
+    public static final int EASY_BOARD_SIZE = 5;
+    public static final int INTERMEDIATE_BOARD_SIZE = 10;
+    public static final int PRO_BOARD_SIZE = 15;
+
+    public static final int EASY_NUMBER_OF_MINES = 4;
+    public static final int INTERMEDIATE_NUMBER_OF_MINES = 16;
+    public static final int PRO_NUMBER_OF_MINES = 38;
 
     private String themeName;
 
