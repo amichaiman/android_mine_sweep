@@ -11,11 +11,11 @@
         android:id="@+id/numberOfMinesSpinner"
         android:layout_width="142dp"
         android:layout_height="30dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:visibility="invisible"
         android:background="@drawable/unwon"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/startGameButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -24,11 +24,12 @@
         android:id="@+id/boardSizeSpinner"
         android:layout_width="142dp"
         android:layout_height="30dp"
+        android:layout_marginBottom="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:background="@drawable/unwon"
         android:entries="@array/boardSizes"
         android:visibility="invisible"
-        android:background="@drawable/unwon"
         app:layout_constraintBottom_toTopOf="@+id/numberOfMinesSpinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -37,7 +38,7 @@
         android:id="@+id/startGameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="28dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/unwon"
@@ -51,6 +52,7 @@
         android:id="@+id/customSwitch"
         android:layout_width="142dp"
         android:layout_height="30dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Custom"
@@ -68,18 +70,19 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="14dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="16dp" />
 
     <Button
         android:id="@+id/proButton"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="48dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:background="@drawable/unwon"
         android:text="PRO"
         android:textAllCaps="false"
-        android:background="@drawable/unwon"
         app:layout_constraintBottom_toTopOf="@+id/customSwitch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -88,12 +91,12 @@
         android:id="@+id/intermediateButton"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="12dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:background="@drawable/unwon"
         android:text="INTERMEDIATE"
         android:textAllCaps="false"
-        android:background="@drawable/unwon"
         app:layout_constraintBottom_toTopOf="@+id/proButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -102,12 +105,12 @@
         android:id="@+id/easyButton"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/unwon"
-        android:textAllCaps="false"
         android:text="EASY"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@+id/intermediateButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -119,6 +122,16 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="14dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="16dp" />
+
+    <ImageView
+        android:id="@+id/arrowAnimationImageView"
+        android:layout_width="35dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintStart_toEndOf="@+id/gameThemeButton"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

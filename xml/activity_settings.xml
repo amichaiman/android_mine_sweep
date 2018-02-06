@@ -8,15 +8,290 @@
     tools:context="com.example.amichai.myapplication.settingsActivity">
 
 
-
-    <Switch
-        android:id="@+id/soundSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
+    <ScrollView
+        android:layout_width="347dp"
+        android:layout_height="508dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Sound"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+
+                <Switch
+                    android:id="@+id/soundSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/settings_background_color"
+                    android:text="Sound"
+                    android:textAlignment="center"
+                    android:textColor="@color/darkGray"
+                    android:textSize="20dp" />
+
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/totalGamesPlayed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/settings_background_color"
+                    android:text="Games played: "
+                    android:textAlignment="center"
+                    android:textColor="@color/darkGray"
+                    android:textSize="20dp" />
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/totalGamesWon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/settings_background_color"
+                    android:text="Games won: "
+                    android:textAlignment="center"
+                    android:textColor="@color/darkGray"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/beginnerGamesPlayed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/settings_background_color"
+                    android:text="Beginner games played: "
+                    android:textAlignment="center"
+                    android:textColor="@color/darkGray"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/beginnerGamesWon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/settings_background_color"
+                    android:text="Beginner games won: "
+                    android:textAlignment="center"
+                    android:textColor="@color/darkGray"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/intermediateGamesPlayed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/settings_background_color"
+                    android:text="Intermediate games played: "
+                    android:textAlignment="center"
+                    android:textColor="@color/darkGray"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/intermediateGamesWon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/settings_background_color"
+                    android:text="Intermediate games won: "
+                    android:textAlignment="center"
+                    android:textColor="@color/darkGray"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/proGamesPlayed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/settings_background_color"
+                    android:text="Pro games played: "
+                    android:textAlignment="center"
+                    android:textColor="@color/darkGray"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/proGamesWon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/settings_background_color"
+                    android:text="Pro games won: "
+                    android:textAlignment="center"
+                    android:textColor="@color/darkGray"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/totalWinningPercentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/settings_background_color"
+                    android:text="Total winning %: "
+                    android:textAlignment="center"
+                    android:textColor="@color/darkGray"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/beginnerWinningPercentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/settings_background_color"
+                    android:text="Beginner winning %: "
+                    android:textAlignment="center"
+                    android:textColor="@color/darkGray"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/intermediateWinningPercentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/settings_background_color"
+                    android:text="Intermediate winning %: "
+                    android:textAlignment="center"
+                    android:textColor="@color/darkGray"
+                    android:textSize="20dp" />
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/proWinningPercentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/settings_background_color"
+                    android:text="Pro winning %: "
+                    android:textAlignment="center"
+                    android:textColor="@color/darkGray"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/resetButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/reset_button"
+                    android:text="Reset"
+                    android:textAllCaps="false"
+                    android:textSize="20dp" />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>

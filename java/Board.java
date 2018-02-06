@@ -12,11 +12,11 @@ public class Board {
     private int spotsRevealed;
     private int spotsFlagged;
     private boolean gameOver;
+    private boolean gameLost;
+    private boolean flagMode;
     private static int DEFAULT_BOARD_SIZE = 10;
 
 
-    public static final int MIN_BOARD_SIZE = 5;
-    public static final int MAX_BOARD_SIZE = 20;
     public static final int MIN_NUMBER_OF_MINES = 1;
 
 
@@ -35,11 +35,26 @@ public class Board {
         setBoard();
         plantMines();
         setNumberOfNeighborBombs();
+        flagMode = false;
+        gameOver = false;
+        gameLost = false;
     }
 
     public Board() {
         boardSize = DEFAULT_BOARD_SIZE;
         setBoard();
+    }
+
+    public void setFlagModeStatus(boolean status){
+        flagMode = status;
+    }
+
+    public boolean getFlagModeStatus(){
+        return flagMode;
+    }
+
+    public boolean gameIsLost(){
+        return gameLost;
     }
 
     private void setBoard() {
@@ -114,6 +129,11 @@ public class Board {
     }
 
     public void buttonClicked(int i, int j) {
+        if (flagMode){
+            flagModeButtonClicked(i,j);
+            return;
+        }
+
         while (spotsRevealed == 0 && board[i][j].getBombStatus() == true) {
             replantMines();
         }
@@ -132,6 +152,7 @@ public class Board {
             board[i][j].setVisibility(true);
             buttons[i][j].setBackgroundResource(R.drawable.bomkclicked);
             gameOver = true;
+            gameLost = true;
             return;
         }
 
@@ -162,9 +183,13 @@ public class Board {
         if (board[i][j].getBombStatus() == true) {
             buttons[i][j].setBackgroundResource(R.drawable.bomkclicked);
             gameOver = true;
+            gameLost = true;
             return;
         }
 
+        if (board[i][j].getFlaggedStatus() == true){
+            spotsFlagged--;
+        }
         int[] offsetI = {-1, -1, -1, 0, 0, 1, 1, 1};
         int[] offsetJ = {-1, 0, 1, -1, 1, -1, 0, 1};
 
@@ -211,6 +236,20 @@ public class Board {
 
     }
 
+    public void flagModeButtonClicked(int i, int j){
+        if (board[i][j].getVisibilityStatus()){
+            return;
+        }
+        if (board[i][j].getFlaggedStatus()){
+            board[i][j].setFlagged(false);
+            spotsFlagged--;
+            buttons[i][j].setBackgroundResource(R.drawable.square);
+        } else if (numberOfMines != spotsFlagged){
+            board[i][j].setFlagged(true);
+            spotsFlagged++;
+            buttons[i][j].setBackgroundResource(R.drawable.flag);
+        }
+    }
     public void flagClicked(int i, int j) {
         if (board[i][j].getFlaggedStatus() == false && board[i][j].getQuestionMarkedStatus() == false) {
             if (numberOfMines-spotsFlagged != 0) {
@@ -257,6 +296,10 @@ public class Board {
 
     public void buttonLongClicked(int i, int j) {
         if (board[i][j].getVisibilityStatus() == true) {
+            return;
+        }
+        if (flagMode){
+            flagModeButtonClicked(i,j);
             return;
         }
         flagClicked(i, j);

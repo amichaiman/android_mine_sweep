@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -48,29 +48,68 @@ public class MainActivity extends AppCompatActivity {
 
     private int gameTime;
 
-    private MediaPlayer mediaPlayer;
+    private ImageView arrowAnimationImageView;
+
+    private Animations animation;
+
+    private Thread t;
+
+    public static Statistics gameStats;
+
+
+    private SharedPreferences highScores;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        highScores = getSharedPreferences(HIGH_SCORE_FILE_NAME, Context.MODE_PRIVATE);
+
         gameTheme = new GameTheme();
+        gameStats = new Statistics();
+        animation = new Animations();
 
-        getHighScores();
-
-        mediaPlayer = MediaPlayer.create(this, R.raw.main_menu_music);
-
-        if (settingsActivity.soundOn){
-            mediaPlayer.start();
-            mediaPlayer.setLooping(true);
-        }
-        settingsActivity.soundOn = true;
         setLevelOrder();
 
-        GameTheme.currentGameLevel = GameTheme.classic;
+        settingsActivity.soundOn = true;
 
+        getHighScores();
+        getStats();
 
+        setButtons();
+
+        addBestTimeToButtons();
+        setButtonsBackground();
+        arrowAnimationImageView = (ImageView) findViewById(R.id.arrowAnimationImageView);
+
+        setArrowAnimation();
+
+        t.start();
+    }
+
+    private void setArrowAnimation() {
+        t = new Thread(){
+            @Override
+            public void run() {
+                try{
+                    while (!isInterrupted()){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                animation.arrow(arrowAnimationImageView);
+                            }
+                        });
+                        Thread.sleep(100);
+                    }
+                } catch (InterruptedException e){
+
+                }
+            }
+        };
+    }
+
+    private void setButtons() {
         beginnerButton = (Button) findViewById(R.id.easyButton);
         beginnerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,7 +209,6 @@ public class MainActivity extends AppCompatActivity {
 
         settingsButton = (Button) findViewById(R.id.settingsButton);
         settingsButton.setBackgroundResource(R.drawable.settings_icon);
-
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -190,34 +228,46 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        addBestTimeToButtons();
-        setButtonsBackground();
     }
 
-    private void getHighScores() {
-        SharedPreferences highScores = getSharedPreferences(HIGH_SCORE_FILE_NAME, Context.MODE_PRIVATE);
+    private void getStats() {
+        gameStats.setNumberOfBeginnerGamesPlayed(highScores.getInt("beginner games played",0));
+        gameStats.setNumberOfIntermediateGamesPlayed(highScores.getInt("intermediate games played",0));
+        gameStats.setNumberOfProGamesPlayed(highScores.getInt("pro games played",0));
 
+        gameStats.setNumberOfBeginnerGamesWon(highScores.getInt("beginner games won",0));
+        gameStats.setNumberOfIntermediateGamesWon(highScores.getInt("intermediate games won",0));
+        gameStats.setNumberOfProGamesWon(highScores.getInt("pro games won",0));
+    }
+
+
+    private void getHighScores() {
         for (int i = 0; i < GameTheme.NUMBER_OF_LEVELS; i++) {
             GameTheme.gameLevels.get(i).setBestTimeEasyMode(highScores.getInt(GameTheme.gameLevels.get(i).getThemeName() + " easy", Integer.MAX_VALUE));
             GameTheme.gameLevels.get(i).setBestIntermediateMode(highScores.getInt(GameTheme.gameLevels.get(i).getThemeName() + " intermediate", Integer.MAX_VALUE));
             GameTheme.gameLevels.get(i).setBestTimeProMode(highScores.getInt(GameTheme.gameLevels.get(i).getThemeName() + " pro", Integer.MAX_VALUE));
         }
-        for (int i=1; i<gameTheme.NUMBER_OF_LEVELS; i++){
-            GameTheme.currentGameLevel = GameTheme.gameLevels.get(i);
+        GameTheme.currentGameLevel = GameTheme.classic;
+
+        while (GameTheme.currentGameLevel.hasNext()){
             if (gameTheme.allModesWon(GameTheme.currentGameLevel)){
-                GameTheme.gameLevels.get(i+1).setLockedStatus(false);
-            } else {
-                return;
+                GameTheme.currentGameLevel.getNextLevel().setLockedStatus(false);
             }
+            GameTheme.currentGameLevel = GameTheme.currentGameLevel.getNextLevel();
         }
+
+        GameTheme.currentGameLevel = GameTheme.classic;
+
     }
 
 
 
     private void setLevelOrder() {
-        for (int i=0; i<GameTheme.NUMBER_OF_LEVELS-1; i++){
+        int i;
+        for (i=0; i<GameTheme.NUMBER_OF_LEVELS-1; i++){
             GameTheme.gameLevels.get(i).setNextLevel(GameTheme.gameLevels.get(i+1));
         }
+        gameTheme.gameLevels.get(i).setNextLevel(null);
     }
 
     public void addBestTimeToButtons() {
@@ -243,7 +293,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 1){
+                if (data.getBooleanExtra("game reset",false)){
+                    gameReset();
+                }
+            }
             if (requestCode == 2) {
+                updateStats(data.getBooleanExtra("gameWon",false),data.getBooleanExtra("gameLost",false));
                 if (data.getBooleanExtra("gameWon", false)) {
                     gameTime = data.getIntExtra("time", 0);
                     setNewWinningTimeAccordingToMode();
@@ -264,15 +320,61 @@ public class MainActivity extends AppCompatActivity {
         addBestTimeToButtons();
     }
 
+    private void gameReset() {
+        gameStats.resetData();
+        getHighScores();
+        setButtonsBackground();
+        addBestTimeToButtons();
+        Intent i = new Intent(MainActivity.this, settingsActivity.class);
+        startActivityForResult(i,1);
+    }
+
+    private void updateStats(boolean gameWon, boolean gameLost) {
+        if (!gameWon && !gameLost){
+            return;
+        }
+        switch (gameMode){
+            case "easy":
+                gameStats.setNumberOfBeginnerGamesPlayed(gameStats.getNumberOfBeginnerGamesPlayed()+1);
+                highScores.edit().putInt("beginner games played",gameStats.getNumberOfBeginnerGamesPlayed()).apply();
+
+                if (gameWon){
+                    gameStats.setNumberOfBeginnerGamesWon(gameStats.getNumberOfBeginnerGamesWon()+1);
+                    highScores.edit().putInt("beginner games won",gameStats.getNumberOfBeginnerGamesWon()).apply();
+                }
+                break;
+
+            case "intermediate":
+                gameStats.setNumberOfIntermediateGamesPlayed(gameStats.getNumberOfIntermediateGamesPlayed()+1);
+                highScores.edit().putInt("intermediate games played",gameStats.getNumberOfIntermediateGamesPlayed()).apply();
+
+                if (gameWon){
+                    gameStats.setNumberOfIntermediateGamesWon(gameStats.getNumberOfIntermediateGamesWon()+1);
+                    highScores.edit().putInt("intermediate games won",gameStats.getNumberOfIntermediateGamesWon()).apply();
+                }
+                break;
+
+            case "pro":
+                gameStats.setNumberOfProGamesPlayed(gameStats.getNumberOfProGamesPlayed()+1);
+                highScores.edit().putInt("pro games played",gameStats.getNumberOfProGamesPlayed()).apply();
+
+                if (gameWon){
+                    gameStats.setNumberOfProGamesWon(gameStats.getNumberOfProGamesWon());
+                    highScores.edit().putInt("pro games won",gameStats.getNumberOfProGamesWon()).apply();
+                }
+        }
+    }
+
     private void saveHighScore() {
         SharedPreferences highScores = getSharedPreferences(HIGH_SCORE_FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = highScores.edit();
 
-        for (int i=0; i<GameTheme.NUMBER_OF_LEVELS; i++) {
-            editor.putInt(GameTheme.gameLevels.get(i).getThemeName() + " easy", GameTheme.gameLevels.get(i).getBestTimeEasyMode());
-            editor.putInt(GameTheme.gameLevels.get(i).getThemeName() + " intermediate", GameTheme.gameLevels.get(i).getBestIntermediateMode());
-            editor.putInt(GameTheme.gameLevels.get(i).getThemeName() + " pro", GameTheme.gameLevels.get(i).getBestTimeProMode());
-        }
+
+
+        editor.putInt(GameTheme.currentGameLevel.getThemeName() + " easy", GameTheme.currentGameLevel.getBestTimeEasyMode());
+        editor.putInt(GameTheme.currentGameLevel.getThemeName() + " intermediate", GameTheme.currentGameLevel.getBestIntermediateMode());
+        editor.putInt(GameTheme.currentGameLevel.getThemeName() + " pro", GameTheme.currentGameLevel.getBestTimeProMode());
+
         editor.apply();
 
     }

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -19,10 +20,10 @@ public class SecondActivity extends AppCompatActivity {
     private int numberOfMines;
     private TableLayout boardTableLayout;
     private TextView numberOfMinesLeftTextView;
-    private TextView pictureOfFlagTextView;
-    private TextView pictureOfTimeTextView;
+    private ImageView timerAnimationImageView;
     private TextView numberOfSecondsTextView;
     private boolean refreshGame;
+    private Button flagButton;
 
     private int time;
 
@@ -30,6 +31,8 @@ public class SecondActivity extends AppCompatActivity {
     private MediaPlayer winGameMediaPlayer;
 
     private Button smileButton;
+
+    private Animations animations;
 
     Thread t;
 
@@ -39,22 +42,24 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(R.layout.activity_second);
 
         Bundle bundle = getIntent().getExtras();
-
         refreshGame = false;
         boardSize = bundle.getInt("boardSize");
         numberOfMines = bundle.getInt("numberOfMines");
 
+        animations = new Animations();
+
+        timerAnimationImageView = (ImageView) findViewById(R.id.timerAnimationImageView);
         numberOfSecondsTextView = (TextView) findViewById(R.id.numberOfSecondsTextView);
         numberOfMinesLeftTextView = (TextView) findViewById(R.id.numberOfMinesLeftTextView);
-        pictureOfFlagTextView = (TextView) findViewById(R.id.pictureOfFlagTextView);
-        pictureOfTimeTextView = (TextView) findViewById(R.id.pictureOfTimeTextView);
+        flagButton = (Button) findViewById(R.id.flagButton);
 
         setSoundByTheme();
+
+
         if (settingsActivity.soundOn && !GameTheme.currentGameLevel.getThemeName().contentEquals("classic")) {
             startGameMediaPlayer.start();
         }
-        pictureOfTimeTextView.setBackgroundResource(R.drawable.time);
-        pictureOfFlagTextView.setBackgroundResource(R.drawable.flag);
+
         numberOfMinesLeftTextView.setText(Integer.toString(numberOfMines));
         numberOfSecondsTextView.setText(Integer.toString(time));
 
@@ -69,6 +74,7 @@ public class SecondActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 numberOfSecondsTextView.setText(Integer.toString(time));
+                                animations.time(timerAnimationImageView);
                                 time+=1;
                             }
                         });
@@ -97,6 +103,19 @@ public class SecondActivity extends AppCompatActivity {
                 }
                 GameTheme.theme.smileyGameImage(smileButton);
                 return false;
+            }
+        });
+
+        flagButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (board.getFlagModeStatus()){
+                    board.setFlagModeStatus(false);
+                    flagButton.setBackgroundResource(R.drawable.flag);
+                } else {
+                    board.setFlagModeStatus(true);
+                    flagButton.setBackgroundResource(R.drawable.flag_pressed);
+                }
             }
         });
 
@@ -218,6 +237,8 @@ public class SecondActivity extends AppCompatActivity {
         if (settingsActivity.soundOn && !GameTheme.currentGameLevel.getThemeName().contentEquals("classic")) {
             winGameMediaPlayer.stop();
         }
+
+        backToMain.putExtra("gameLost", board.gameIsLost());
         if (board.gameWon()){
             backToMain.putExtra("gameWon", true);
             backToMain.putExtra("time", time-1);
