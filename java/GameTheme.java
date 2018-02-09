@@ -3,7 +3,7 @@ package com.example.amichai.myapplication;
 import java.util.ArrayList;
 
 public class GameTheme {
-    public static final int NUMBER_OF_LEVELS = 6;
+    public static final int NUMBER_OF_LEVELS = 7;
 
     public static Theme theme;
 
@@ -17,7 +17,7 @@ public class GameTheme {
     public static GameLevel quagmire;
     public static GameLevel borat;
     public static GameLevel obama;
-
+    public static GameLevel dalaiLama;
     public static GameLevel currentGameLevel;
 
     public GameTheme(){
@@ -29,7 +29,7 @@ public class GameTheme {
         quagmire = new GameLevel("quagmire");
         borat = new GameLevel("borat");
         obama = new GameLevel("obama");
-
+        dalaiLama = new GameLevel("dalai lama");
         gameLevels = new ArrayList<GameLevel>();
 
         gameLevels.add(0,classic);
@@ -38,10 +38,10 @@ public class GameTheme {
         gameLevels.add(3,vitas);
         gameLevels.add(4,borat);
         gameLevels.add(5,obama);
+        gameLevels.add(6,dalaiLama);
 
         currentGameLevel = gameLevels.get(0);
         trump.setLockedStatus(false);
-
         setLevelBoardSizes();
         setLevelNumberOfBombs();
     }

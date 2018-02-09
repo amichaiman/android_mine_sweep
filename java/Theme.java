@@ -36,6 +36,8 @@ public class Theme {
                 b.setBackgroundResource(R.drawable.game_borat); break;
             case "obama":
                 b.setBackgroundResource(R.drawable.game_obama); break;
+            case "dalai lama":
+                b.setBackgroundResource(R.drawable.game_dalai_lama); break;
 
         }
     }
@@ -54,6 +56,8 @@ public class Theme {
                 b.setBackgroundResource(R.drawable.pressed_borat); break;
             case "obama":
                 b.setBackgroundResource(R.drawable.pressed_obama); break;
+            case "dalai lama":
+                b.setBackgroundResource(R.drawable.pressed_dalai_lama); break;
         }
     }
 
@@ -72,6 +76,8 @@ public class Theme {
                 b.setBackgroundResource(R.drawable.win_borat); break;
             case "obama":
                 b.setBackgroundResource(R.drawable.win_obama); break;
+            case "dalai lama":
+                b.setBackgroundResource(R.drawable.win_dalai_lama); break;
         }
     }
 
@@ -90,6 +96,8 @@ public class Theme {
                 b.setBackgroundResource(R.drawable.lose_borat); break;
             case "obama":
                 b.setBackgroundResource(R.drawable.lose_obama); break;
+            case "dalai lama":
+                b.setBackgroundResource(R.drawable.lose_dalai_lama); break;
         }
     }
 
@@ -113,6 +121,8 @@ public class Theme {
             case "obama":
                 b.setBackgroundResource(R.drawable.obama);
                 break;
+            case "dalai lama":
+                b.setBackgroundResource(R.drawable.dalai_lama); break;
         }
     }
     public void themeButtonPressed(Button b){

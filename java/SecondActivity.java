@@ -3,6 +3,7 @@ package com.example.amichai.myapplication;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,9 +24,10 @@ public class SecondActivity extends AppCompatActivity {
     private ImageView timerAnimationImageView;
     private TextView numberOfSecondsTextView;
     private boolean refreshGame;
-    private Button flagButton;
+    private FloatingActionButton flagButton;
+    private ImageView flagImageView;
 
-    private int time;
+    private int time = 0;
 
     private MediaPlayer startGameMediaPlayer;
     private MediaPlayer winGameMediaPlayer;
@@ -34,7 +36,7 @@ public class SecondActivity extends AppCompatActivity {
 
     private Animations animations;
 
-    Thread t;
+    public static Thread t;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,12 @@ public class SecondActivity extends AppCompatActivity {
         timerAnimationImageView = (ImageView) findViewById(R.id.timerAnimationImageView);
         numberOfSecondsTextView = (TextView) findViewById(R.id.numberOfSecondsTextView);
         numberOfMinesLeftTextView = (TextView) findViewById(R.id.numberOfMinesLeftTextView);
-        flagButton = (Button) findViewById(R.id.flagButton);
+        flagButton = (FloatingActionButton) findViewById(R.id.flagModeFloatingActionButton);
+        flagImageView = (ImageView) findViewById(R.id.flagImageView);
+
+        if (!settingsActivity.flagModeFloatingButton){
+            flagButton.setVisibility(View.INVISIBLE);
+        }
 
         setSoundByTheme();
 
@@ -111,15 +118,16 @@ public class SecondActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (board.getFlagModeStatus()){
                     board.setFlagModeStatus(false);
-                    flagButton.setBackgroundResource(R.drawable.flag);
+                    flagImageView.setImageResource(R.drawable.flag);
+                    flagButton.setImageResource(R.drawable.flag);
                 } else {
                     board.setFlagModeStatus(true);
-                    flagButton.setBackgroundResource(R.drawable.flag_pressed);
+                    flagImageView.setImageResource(R.drawable.flag_pressed);
+                    flagButton.setImageResource(R.drawable.flag_pressed);
                 }
             }
         });
 
-        t.start();
         createBoard();
         board.setButtons(buttons);
 
@@ -149,7 +157,9 @@ public class SecondActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         board.reCloseSpots(view.getId()/boardSize,view.getId()%boardSize);
                         GameTheme.theme.smileyGameImage(smileButton);
+
                         board.buttonClicked(view.getId() / boardSize, view.getId() % boardSize);
+
                         numberOfMinesLeftTextView.setText(Integer.toString(numberOfMines - board.getSpotsFlagged()));
 
                         if (board.gameIsOver()) {
@@ -223,6 +233,10 @@ public class SecondActivity extends AppCompatActivity {
             case "obama":
                 startGameMediaPlayer = MediaPlayer.create(this, R.raw.start_game_obama);
                 winGameMediaPlayer = MediaPlayer.create(this, R.raw.win_game_obama); break;
+            case "dalai lama":
+                startGameMediaPlayer = MediaPlayer.create(this, R.raw.game_start_dalai_lama);
+                winGameMediaPlayer = MediaPlayer.create(this, R.raw.win_dame_dalai_lama); break;
+
         }
     }
 

@@ -15,8 +15,10 @@ import android.widget.Toast;
 public class settingsActivity extends AppCompatActivity {
 
     private Switch soundSwitch;
+    private Switch flagModeSwitch;
     private Button resetButton;
     public static boolean soundOn;
+    public static boolean flagModeFloatingButton;
 
     private TextView totalGamesPlayed;
     private TextView totalGamesWon;
@@ -33,13 +35,14 @@ public class settingsActivity extends AppCompatActivity {
     private TextView beginnerWinningPercentage;
     private TextView intermediateWinningPercentage;
     private TextView proWinningPercentage;
-
+    private Button howToPlayButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
         soundSwitch = (Switch) findViewById(R.id.soundSwitch);
+        flagModeSwitch = (Switch) findViewById(R.id.flagModeSwitch);
         resetButton = (Button) findViewById(R.id.resetButton);
 
         totalGamesPlayed = (TextView) findViewById(R.id.totalGamesPlayed);
@@ -58,8 +61,10 @@ public class settingsActivity extends AppCompatActivity {
         intermediateWinningPercentage = (TextView) findViewById(R.id.intermediateWinningPercentage);
         proWinningPercentage = (TextView) findViewById(R.id.proWinningPercentage);
 
+        howToPlayButton = (Button) findViewById(R.id.howToPlayButton);
+
         totalGamesPlayed.setText("Total games played: " + Integer.toString(MainActivity.gameStats.getNumberOfGamesPlayed()));
-        totalGamesWon.setText("Total games won: " + Integer.toString(MainActivity.gameStats.getNumberOfProGamesWon()));
+        totalGamesWon.setText("Total games won: " + Integer.toString(MainActivity.gameStats.getNumberOfGamesWon()));
 
         numberOfBeginnerGamesPlayed.setText("Beginner games played: " + Integer.toString(MainActivity.gameStats.getNumberOfBeginnerGamesPlayed()));
         numberOfIntermediateGamesPlayed.setText("Intermediate games played: "+ Integer.toString(MainActivity.gameStats.getNumberOfIntermediateGamesPlayed()));
@@ -70,18 +75,25 @@ public class settingsActivity extends AppCompatActivity {
         numberOfIntermediateGamesWon.setText("Intermediate games won: " + Integer.toString(MainActivity.gameStats.getNumberOfIntermediateGamesWon()));
         numberOfBeginnerGamesWon.setText("Beginner games won: " + Integer.toString(MainActivity.gameStats.getNumberOfBeginnerGamesWon()));
 
-        totalWinningPercentage.setText("Total winning %: " + Float.toString(MainActivity.gameStats.getTotalWinningPercentage())+"%");
-        beginnerWinningPercentage.setText("Beginner winning %: " + Float.toString(MainActivity.gameStats.getWinningPercentageBeginnerMode())+"%");
-        intermediateWinningPercentage.setText("Intermediate winning %: " + Float.toString(MainActivity.gameStats.getWinningPercentageIntermediateMode())+"%");
-        proWinningPercentage.setText("Pro winning %: " + Float.toString(MainActivity.gameStats.getWinningPercentageProMode())+"%");
+
+        totalWinningPercentage.setText("Total winning %: " + String.format("%.01f",MainActivity.gameStats.getTotalWinningPercentage())+"%");
+        beginnerWinningPercentage.setText("Beginner winning %: " + String.format("%.01f",MainActivity.gameStats.getWinningPercentageBeginnerMode())+"%");
+        intermediateWinningPercentage.setText("Intermediate winning %: " + String.format("%.01f",MainActivity.gameStats.getWinningPercentageIntermediateMode())+"%");
+        proWinningPercentage.setText("Pro winning %: " + String.format("%.01f",MainActivity.gameStats.getWinningPercentageProMode())+"%");
 
         soundSwitch.setChecked(soundOn);
-
-
+        flagModeSwitch.setChecked(flagModeFloatingButton);
         soundSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 soundOn = b;
+            }
+        });
+
+        flagModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                flagModeFloatingButton = b;
             }
         });
 
@@ -107,6 +119,14 @@ public class settingsActivity extends AppCompatActivity {
                     }
                 });
                 alertDialog.show();
+            }
+        });
+
+        howToPlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(settingsActivity.this, HowToPlay.class);
+                startActivity(intent);
             }
         });
     }

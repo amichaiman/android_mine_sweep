@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private Button startGameButton;
     private Button settingsButton;
     private Button gameThemeButton;
+    private Button firstTimerButton;
 
     private int boardSize;
     private int numberOfMines;
@@ -56,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static Statistics gameStats;
 
-
     private SharedPreferences highScores;
     @Override
 
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         setLevelOrder();
 
         settingsActivity.soundOn = true;
-
+        settingsActivity.flagModeFloatingButton = true;
         getHighScores();
         getStats();
 
@@ -110,6 +110,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setButtons() {
+
+        firstTimerButton = (Button) findViewById(R.id.firstTimerButton);
+        firstTimerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, HowToPlay.class);
+                startActivity(intent);
+            }
+        });
+
         beginnerButton = (Button) findViewById(R.id.easyButton);
         beginnerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -325,11 +335,18 @@ public class MainActivity extends AppCompatActivity {
         getHighScores();
         setButtonsBackground();
         addBestTimeToButtons();
+        lockLevels();
         Intent i = new Intent(MainActivity.this, settingsActivity.class);
         startActivityForResult(i,1);
     }
 
-    private void updateStats(boolean gameWon, boolean gameLost) {
+    private void lockLevels() {
+        for (int i=2; i<GameTheme.NUMBER_OF_LEVELS; i++){
+            GameTheme.gameLevels.get(i).setLockedStatus(true);
+        }
+    }
+
+    private void    updateStats(boolean gameWon, boolean gameLost) {
         if (!gameWon && !gameLost){
             return;
         }
@@ -359,7 +376,7 @@ public class MainActivity extends AppCompatActivity {
                 highScores.edit().putInt("pro games played",gameStats.getNumberOfProGamesPlayed()).apply();
 
                 if (gameWon){
-                    gameStats.setNumberOfProGamesWon(gameStats.getNumberOfProGamesWon());
+                    gameStats.setNumberOfProGamesWon(gameStats.getNumberOfProGamesWon()+1);
                     highScores.edit().putInt("pro games won",gameStats.getNumberOfProGamesWon()).apply();
                 }
         }
@@ -382,7 +399,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void openNextLevelIfLocked() {
-        if (GameTheme.currentGameLevel.getNextLevel().getLockedStatus() == true){
+        if (GameTheme.currentGameLevel.hasNext() && GameTheme.currentGameLevel.getNextLevel().getLockedStatus() == true){
             GameTheme.currentGameLevel.getNextLevel().setLockedStatus(false);
             Toast.makeText(getApplicationContext(),GameTheme.currentGameLevel.getNextLevel().getThemeName()+" unlocked!",Toast.LENGTH_SHORT).show();
         }

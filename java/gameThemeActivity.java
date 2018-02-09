@@ -15,7 +15,7 @@ public class gameThemeActivity extends AppCompatActivity {
     private Button quagmireButton;
     private Button boratButton;
     private Button obamaButton;
-
+    private Button dalaiLamaButton;
 
 
     @Override
@@ -30,7 +30,7 @@ public class gameThemeActivity extends AppCompatActivity {
         quagmireButton = (Button) findViewById(R.id.quagmireButton);
         boratButton = (Button) findViewById(R.id.boratButton);
         obamaButton = (Button) findViewById(R.id.obamaButton);
-
+        dalaiLamaButton = (Button) findViewById(R.id.dalaiLamaButton);
 
 
         smileyButton.setBackgroundResource(R.drawable.smiley);
@@ -74,7 +74,13 @@ public class gameThemeActivity extends AppCompatActivity {
             obamaButton.setBackgroundResource(R.drawable.obama);
         }
 
-
+        if (GameTheme.dalaiLama.getLockedStatus() == true) {
+            dalaiLamaButton.setBackgroundResource(R.drawable.dalai_lama_locked);
+        }  else if (MainActivity.gameTheme.allModesWon(GameTheme.dalaiLama)) {
+            dalaiLamaButton.setBackgroundResource(R.drawable.dalai_lama_level_won);
+        }else {
+            dalaiLamaButton.setBackgroundResource(R.drawable.dalai_lama);
+        }
 
         smileyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +151,19 @@ public class gameThemeActivity extends AppCompatActivity {
                 } else {
                     GameTheme.currentGameLevel = GameTheme.obama;
                     GameTheme.theme.setThemeName("obama");
+                    returnToMain();
+                }
+            }
+        });
+
+        dalaiLamaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (GameTheme.dalaiLama.getLockedStatus() == true){
+                    levelLockedMessage();
+                } else {
+                    GameTheme.currentGameLevel = GameTheme.dalaiLama;
+                    GameTheme.theme.setThemeName("dalai lama");
                     returnToMain();
                 }
             }

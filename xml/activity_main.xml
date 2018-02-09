@@ -37,8 +37,8 @@
     <Button
         android:id="@+id/startGameButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="60dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/unwon"
@@ -52,7 +52,7 @@
         android:id="@+id/customSwitch"
         android:layout_width="142dp"
         android:layout_height="30dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Custom"
@@ -77,7 +77,7 @@
         android:id="@+id/proButton"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/unwon"
@@ -91,7 +91,7 @@
         android:id="@+id/intermediateButton"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="28dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/unwon"
@@ -105,7 +105,7 @@
         android:id="@+id/easyButton"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="28dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/unwon"
@@ -133,5 +133,18 @@
         android:layout_marginTop="28dp"
         app:layout_constraintStart_toEndOf="@+id/gameThemeButton"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/firstTimerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@color/transparent"
+        android:text="First timer? click here"
+        android:textAllCaps="false"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

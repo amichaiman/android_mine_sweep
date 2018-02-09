@@ -14,6 +14,7 @@ public class Board {
     private boolean gameOver;
     private boolean gameLost;
     private boolean flagMode;
+    private boolean firstSpotClicked;
     private static int DEFAULT_BOARD_SIZE = 10;
 
 
@@ -38,6 +39,7 @@ public class Board {
         flagMode = false;
         gameOver = false;
         gameLost = false;
+        firstSpotClicked = false;
     }
 
     public Board() {
@@ -129,6 +131,13 @@ public class Board {
     }
 
     public void buttonClicked(int i, int j) {
+        if (spotsRevealed == 0){
+            SecondActivity.t.start();
+        }
+        if (board[i][j].getVisibilityStatus() == true) {
+            openSpotClicked(i, j);
+            return;
+        }
         if (flagMode){
             flagModeButtonClicked(i,j);
             return;
@@ -138,10 +147,6 @@ public class Board {
             replantMines();
         }
 
-        if (board[i][j].getVisibilityStatus() == true) {
-            openSpotClicked(i, j);
-            return;
-        }
 
         if (board[i][j].getFlaggedStatus() == true || board[i][j].getQuestionMarkedStatus() == true) {
             flagClicked(i, j);
